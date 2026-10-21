@@ -6,6 +6,7 @@ import rpy2.robjects as ro
 from rpy2.robjects import pandas2ri
 from rpy2.robjects.conversion import localconverter
 
+from ancova_assumptions import with_rpy2_converter
 from helpers import display_table  # noqa: F401  (re-exported so notebooks can call st.display_table)
 
 def get_violated_terms(df_ancova_assumptions, structure, metric):
@@ -16,6 +17,7 @@ def get_violated_terms(df_ancova_assumptions, structure, metric):
     )
     return sub['term'].tolist()  # e.g. ['group:age'], ['group:sex'], [], or both
 
+@with_rpy2_converter
 def ancova_tests(df, metrics, structures, df_ancova_assumptions, group_col = 'group', structure_col = 'structure', covar = 'age + sex'):
     # Run ANCOVA for each structure and metric, controlling for age and sex, and return the results in a dataframe
     results = []
@@ -123,6 +125,7 @@ def post_ancova_correctMultipleComparison(df_postAncova, mc_method='fdr_by', mc_
     return df_postAncova_group
 
 
+@with_rpy2_converter
 def posthoc_eem_tests(df, df_postAncova, df_ancova_assumptions, mc_alpha=0.05,
                        structure_col='structure', group_col='group', covar='age + sex'):
     group_col_eem = 'group_eem' # eem needs a different name to avoid confusion with original group column in df
@@ -239,6 +242,7 @@ def posthoc_eem_tests(df, df_postAncova, df_ancova_assumptions, mc_alpha=0.05,
 
 
 # Ancova test for hippocampal subfield analysis.
+@with_rpy2_converter
 def ancova_tests_subfield(df, metrics, subfields,  covar=None, group_col='group', subfield_col = 'subfield'):
     """
     ANCOVA for subfield level analyses. Controls by covar

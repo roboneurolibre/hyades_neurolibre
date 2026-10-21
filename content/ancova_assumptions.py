@@ -14,12 +14,29 @@ Requires R packages: car (and base stats, already included in R)
 Requires Python packages: pandas, rpy2
 """
 
+import functools
+
 import pandas as pd
 import rpy2.robjects as ro
 from rpy2.robjects import pandas2ri
 from rpy2.robjects.conversion import localconverter
 
 
+def with_rpy2_converter(func):
+    """Run func with rpy2's default converter active.
+
+    rpy2 keeps its converter in a ContextVar set at import time. Some ipykernel versions (e.g. 7.0.x,
+    used by the NeuroLibre Binder image) run each cell in a fresh context, so the converter is gone in
+    later cells and every rpy2 call fails with "Conversion rules for `rpy2.robjects` appear to be missing".
+    """
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        with localconverter(ro.default_converter):
+            return func(*args, **kwargs)
+    return wrapper
+
+
+@with_rpy2_converter
 def ancova_homogeneity_tests(df, metrics, structures, covar='age', group_col='group', structure_col='structure',
                               factor_covars=None):
     """
@@ -102,6 +119,7 @@ def ancova_homogeneity_tests(df, metrics, structures, covar='age', group_col='gr
     return results
 
 
+@with_rpy2_converter
 def ancova_normality_tests(df, metrics, structures, covar='age', group_col='group', structure_col='structure',
                             factor_covars=None):
     # Check normality of residuals assumption (Shapiro-Wilk) using R
@@ -174,6 +192,7 @@ def ancova_normality_tests(df, metrics, structures, covar='age', group_col='grou
     return results
 
 
+@with_rpy2_converter
 def ancova_variance_homogeneity_tests(df, metrics, structures, group_col='group', structure_col='structure'):
     # Check homogeneity of variances assumption (Levene's test) using R
     results = []
@@ -328,6 +347,7 @@ def ancova_assumption_tests(df, metrics, structures, covar='age', group_col='gro
     return summary, raw_results
 
 
+@with_rpy2_converter
 def plot_normality_diagnostics(df, normality_df, covar='age', group_col='group', structure_col='structure',
                                 factor_covars=None, only_violations=True, max_plots=12, n_cols=3):
     """
