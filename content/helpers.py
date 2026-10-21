@@ -35,6 +35,22 @@ _PREFERRED_FONTS = ["Arial", "Helvetica", "Liberation Sans"]
 _INSTALLED_FONTS = {f.name for f in font_manager.fontManager.ttflist}
 FIGURE_FONTS = [f for f in _PREFERRED_FONTS if f in _INSTALLED_FONTS][:1] or ["DejaVu Sans"]
 
+# Static figures are drawn at their printed size (journal text width 17.8 cm), so these font sizes are the printed
+# sizes and are the same in every figure (target >= 7 pt)
+TEXT_WIDTH_IN = 17.8 / 2.54
+STATIC_RC = {
+    "font.size": 8, "axes.titlesize": 8, "axes.labelsize": 8, "figure.titlesize": 8,
+    "xtick.labelsize": 7, "ytick.labelsize": 7, "legend.fontsize": 7, "legend.title_fontsize": 8,
+    "axes.linewidth": 0.6, "xtick.major.width": 0.6, "ytick.major.width": 0.6, "patch.linewidth": 0.6,
+    "lines.linewidth": 1.0, "lines.markersize": 3, "boxplot.flierprops.markersize": 2,
+}
+
+
+def static_theme(style="ticks"):
+    """Seaborn theme for the static figures: journal font (FIGURE_FONTS) at the printed sizes of STATIC_RC."""
+    import seaborn as sns
+    sns.set_theme(style=style, font=FIGURE_FONTS[0], rc=STATIC_RC)
+
 
 def save_static_figure(fig, label, folder=STATIC_FIGURE_DIR, dpi=200):
     """Save a matplotlib figure as <folder>/<label>.<format> for each format in STATIC_FIGURE_FORMATS.
@@ -52,7 +68,9 @@ def save_static_figure(fig, label, folder=STATIC_FIGURE_DIR, dpi=200):
         if ext == "png":
             fig.savefig(path, dpi=dpi, bbox_inches="tight")
         elif ext == "pdf":
-            fig.savefig(path, bbox_inches="tight", metadata={"CreationDate": None})
+            # TrueType (Type 42) fonts: Type 3 fonts are often rejected by journal production checks
+            with matplotlib.rc_context({"pdf.fonttype": 42}):
+                fig.savefig(path, bbox_inches="tight", metadata={"CreationDate": None})
         elif ext == "svg":
             with matplotlib.rc_context({"svg.fonttype": "none"}):
                 fig.savefig(path, bbox_inches="tight", metadata={"Date": None})
