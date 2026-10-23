@@ -1,7 +1,0 @@
-format: jb-book
-root: paper.md
-chapters:
-  - file: supplementary.md
-  - file: content/demographics.ipynb
-  - file: content/section1_wholebrain.ipynb
-  - file: content/section2_hippocampus.ipynb

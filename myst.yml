@@ -1,7 +1,6 @@
 # See docs at: https://mystmd.org/guide/frontmatter
 version: 1
 project:
-  id: f718c15b-824f-4326-9628-575a46bb455b
   # keep identical to the title in paper.md frontmatter
   title: 'Probing gray matter microstructure differences in neurodegenerative dementia using b-tensor encoding diffusion MRI'
   affiliations:
@@ -115,13 +114,18 @@ project:
     - hippocampal subfields
     - magnetization transfer
   github: https://github.com/RicardoRios46/hyades_neurolibre
+  jupyter:
+    binder:
+      url: https://terrarium.evidencepub.io
+      ref: main
+      repo: RicardoRios46/hyades_neurolibre
   banner: static/Hipp_uFA.png
   venue: NeuroLibre
   subject: Living Preprint
   numbering:
     heading: true
   doi: 10.55458/neurolibre.xxxxx  # placeholder, assigned by NeuroLibre on publication
-  #date: 2026-10-08  # NeuroLibre submission date
+  date: '2026-10-08'
   open_access: true
   license:
     content: CC-BY-4.0
@@ -165,5 +169,11 @@ project:
     - content/demographics.ipynb
     - content/section1_wholebrain.ipynb
     - content/section2_hippocampus.ipynb
+  toc:
+    - file: paper.md
+    - file: supplementary.md
+    - file: content/demographics.ipynb
+    - file: content/section1_wholebrain.ipynb
+    - file: content/section2_hippocampus.ipynb
 site:
   template: article-theme
