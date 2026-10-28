@@ -113,23 +113,23 @@ project:
     - neurodegenerative dementia
     - hippocampal subfields
     - magnetization transfer
-  github: https://github.com/RicardoRios46/hyades_neurolibre
+  github: https://github.com/roboneurolibre/hyades_neurolibre
   jupyter:
     binder:
-      url: https://terrarium.evidencepub.io
+      url: https://live.evidencepub.io
       ref: main
-      repo: RicardoRios46/hyades_neurolibre
+      repo: roboneurolibre/hyades_neurolibre
   banner: static/Hipp_uFA.png
   venue: NeuroLibre
   subject: Living Preprint
   numbering:
     heading: true
-  doi: 10.55458/neurolibre.xxxxx  # placeholder, assigned by NeuroLibre on publication
+  doi: 10.55458/neurolibre.00052  # placeholder, assigned by NeuroLibre on publication
   date: '2026-10-08'
   open_access: true
   license:
     content: CC-BY-4.0
-    code: MIT
+    code: NOASSERTION
   abbreviations:
     AD: Alzheimer's disease
     FTD: Frontotemporal dementia
@@ -175,5 +175,14 @@ project:
     - file: content/demographics.ipynb
     - file: content/section1_wholebrain.ipynb
     - file: content/section2_hippocampus.ipynb
+  copyright: NeuroLibre
 site:
   template: article-theme
+  options:
+    favicon: favicon.ico
+    twitter: neurolibre
+    logo: logo.png
+    logo_text: NeuroLibre
+  actions:
+    - title: 🏠 Home
+      url: https://doi.org/10.55458/neurolibre.00052
