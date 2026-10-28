@@ -129,7 +129,7 @@ project:
   open_access: true
   license:
     content: CC-BY-4.0
-    code: NOASSERTION
+    code: MIT
   abbreviations:
     AD: Alzheimer's disease
     FTD: Frontotemporal dementia
